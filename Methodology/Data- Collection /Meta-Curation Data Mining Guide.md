@@ -1,219 +1,153 @@
-# Meta-Curation Data Collection Guide
+# Step 1: Data Collection - Automating Access via APIs and Web Scraping
 
-This guide explains how to use our collection of web scrapers to gather imagery and metadata (in this case cloud, but can be altered) from various digital archives and museum collections. Even if you've never used a command-line tool before, this step-by-step guide will help you get started.
+This first phase integrates automated data collection using **APIs** and **web scraping techniques**, aiming to accumulate a large corpus of image files available under open-access licenses. The scraper automates keyword-based searches and downloads content according to a predefined term: in this case, **"cloud."**
 
-## Table of Contents
-1. [Prerequisites](#prerequisites)
-2. [Setting Up Your Environment](#setting-up-your-environment)
-3. [Getting API Keys](#getting-api-keys)
-4. [Running the Scrapers](#running-the-scrapers)
-5. [Customizing Your Searches](#customizing-your-searches)
-6. [Understanding the Output](#understanding-the-output)
-7. [Troubleshooting](#troubleshooting)
+## Overview
 
-## Prerequisites
+The primary data sources for this project include a variety of museums, art institutions, and catalog platforms, each providing access to collections through APIs. The institutions selected are the ones that currently within the cultural sphere have the most granularity offering digital access to both public domain materials and metadata.
 
-Before you begin, you'll need:
+**Granularity in data** refers to the level of detail or precision of the data. For example, data that has a high level of granularity would have a large number of individual pieces of information.
 
-- **Python 3.7 or higher** installed on your computer
-- **Command line/terminal** access
-- **Internet connection**
-- **API keys** for the collections you want to access (instructions below)
-- At least **1GB of free disk space** (more is better as image collections can grow large)
+## Data Collection Targets
 
-If you don't have Python installed, visit [python.org](https://www.python.org/downloads/) to download and install it for your operating system.
+The scraper collects:
+- **Thumbnail and full-resolution images** (where available)
+- **Metadata**: title, creator, date, medium, institutional source
+- **API response data**: tags, subject headings, collection name, object ID and URL links to original image entries for traceability
 
-## Setting Up Your Environment
+## Supported Data Sources
 
-1. **Clone or download this repository**:
-   ```bash
-   git clone https://github.com/yourusername/meta-curation-atlas.git
-   cd meta-curation-atlas/scrapers
-   ```
+### Museum APIs
+- **Metropolitan Museum of Art** - Open Access API
+- **Smithsonian Institution** - Multiple collection APIs
+- **Digital Public Library of America** - Multiple collection APIs
+- **Europeana** - European cultural heritage
+- **Rijksmuseum** - Dutch national collection
+- **Chicago Art Institute** - Open Access API
+- **Cooper Hewitt** - Open Access API
 
-2. **Create a virtual environment** (recommended but optional):
-   ```bash
-   # On Windows
-   python -m venv venv
-   venv\Scripts\activate
+### Configuration Files
 
-   # On macOS/Linux
-   python3 -m venv venv
-   source venv/bin/activate
-   ```
+#### `data_sources/api_endpoints.json`
+Contains all API endpoint configurations, rate limits, and authentication requirements.
 
-3. **Install required packages**:
-   ```bash
-   pip install -r requirements.txt
-   ```
+#### `config/api_config.yaml`
+Store your API keys and personal configurations here (not tracked in git).
 
-## Getting API Keys
+## File Structure
 
-Each institution requires its own API key. Here's how to get them:
-
-### Rijksmuseum
-1. Visit [Rijksmuseum API](https://www.rijksmuseum.nl/en/api)
-2. Create a free account
-3. Request an API key through your account dashboard
-
-### Harvard Art Museums
-1. Visit [Harvard Art Museums API](https://harvardartmuseums.org/collections/api)
-2. Fill out the request form with your information
-3. You'll receive an API key via email
-
-### Digital Public Library of America (DPLA)
-1. Visit [DPLA API](https://pro.dp.la/developers)
-2. Click on "Get a Key"
-3. Fill out the form
-4. You'll receive an API key via email
-
-### Metropolitan Museum of Art
-The Met API doesn't require a key, so you can use that scraper without additional steps.
-
-## Running the Scrapers
-
-Each scraper can be run independently from the command line. Here are examples for each:
-
-### Rijksmuseum Scraper
-
-```bash
-python rijksmuseum_scraper.py --key YOUR_API_KEY --terms "cloud,sky,mist" --max 50 --output "rijks_clouds"
+```
+01-data-collection/
+├── scrapers/
+│   ├── base_scraper.py          # Base class for all scrapers
+│   ├── museum_apis/             # API-specific scrapers
+│   └── web_scrapers/            # General web scraping tools
+├── data_sources/
+│   ├── api_endpoints.json       # API configurations
+│   └── institution_list.md      # Detailed source documentation
+├── output/
+│   ├── raw_images/              # Downloaded images
+│   ├── metadata/                # JSON metadata files
+│   └── logs/                    # Collection logs and reports
+└── scripts/
+    ├── run_collection.py        # Main collection script
+    ├── validate_downloads.py    # Quality control
+    └── generate_metadata_report.py
 ```
 
-### Metropolitan Museum of Art Scraper
+## Usage
 
+### 1. Setup Configuration
 ```bash
-python met_scraper.py --terms "cloud,sky,atmosphere" --max 100 --output "met_clouds"
+# Copy example config
+cp ../config/api_config.yaml.example ../config/api_config.yaml
+
+# Edit with your API keys
+nano ../config/api_config.yaml
 ```
 
-### Harvard Art Museums Scraper
-
+### 2. Run Collection
 ```bash
-python harvard_scraper.py --key YOUR_API_KEY --terms "cloud,sky" --max 75 --output "harvard_clouds"
+# Collect from all sources
+python scripts/run_collection.py --keyword "cloud" --max-items 1000
+
+# Collect from specific source
+python scripts/run_collection.py --source "met_museum" --keyword "cloud"
+
+# Resume interrupted collection
+python scripts/run_collection.py --resume --log-file output/logs/collection_2025.log
 ```
 
-### DPLA Scraper
-
+### 3. Validate Results
 ```bash
-python dpla_scraper.py --key YOUR_API_KEY --terms "cloud,sky,weather" --max 200 --output "dpla_clouds"
+# Check download integrity
+python scripts/validate_downloads.py
+
+# Generate collection report
+python scripts/generate_metadata_report.py
 ```
 
-## Customizing Your Searches
+## Output Format
 
-### Using a Configuration File
+### Image Files
+- Stored in `output/raw_images/[source]/[object_id].[extension]`
+- Original filename preserved when possible
+- Multiple resolutions saved when available
 
-Create a `config.json` file in the scrapers directory to store your API keys and preferences:
+### Metadata Files
+- JSON format: `output/metadata/[source]/[object_id].json`
+- Standardized schema across all sources
+- Includes original API response data
 
+### Example Metadata Structure
 ```json
 {
-  "api_keys": {
-    "rijksmuseum": "YOUR_RIJKSMUSEUM_KEY",
-    "harvard": "YOUR_HARVARD_KEY",
-    "dpla": "YOUR_DPLA_KEY"
+  "object_id": "12345",
+  "source": "met_museum",
+  "title": "Cloud Study",
+  "creator": "John Constable",
+  "date": "1821",
+  "medium": "Oil on paper",
+  "tags": ["landscape", "sky", "cloud", "nature"],
+  "collection": "European Paintings",
+  "api_url": "https://collectionapi.metmuseum.org/public/collection/v1/objects/12345",
+  "image_urls": {
+    "thumbnail": "https://images.metmuseum.org/CRDImages/ep/web-large/12345.jpg",
+    "primary": "https://images.metmuseum.org/CRDImages/ep/original/12345.jpg"
   },
-  "search_terms": [
-    "cloud",
-    "sky",
-    "weather",
-    "mist",
-    "fog",
-    "atmosphere"
-  ],
-  "excluded_terms": [
-    "saint cloud",
-    "saint-cloud",
-    "st cloud",
-    "st. cloud"
-  ],
-  "max_results": 100,
-  "output_dir": "cloud_data"
+  "downloaded_at": "2025-06-29T10:30:00Z",
+  "file_paths": {
+    "thumbnail": "output/raw_images/met_museum/12345_thumb.jpg",
+    "primary": "output/raw_images/met_museum/12345.jpg"
+  }
 }
 ```
 
-### Customizing Search Terms
+## Rate Limiting and Ethics
 
-You can customize the search terms for more specific clouds:
-
-```bash
-python rijksmuseum_scraper.py --key YOUR_KEY --terms "storm,thunder,lightning,cumulus,nimbus" --output "storm_clouds"
-```
-
-### Excluding Terms
-
-To exclude certain terms from your results:
-
-```bash
-python met_scraper.py --terms "cloud" --exclude "saint-cloud,computing,computer" --output "met_natural_clouds"
-```
-
-## Understanding the Output
-
-Each scraper creates a structured output directory containing:
-
-```
-output_dir/
-├── images/              # Full-resolution images 
-├── thumbnails/          # Thumbnail images (when available)
-├── metadata/            # JSON files with complete metadata
-└── log.txt              # Processing log with timestamps
-```
-
-### Metadata Structure
-
-The metadata JSON files contain rich information from each institution, including:
-
-- Title, creator, and date
-- Medium and materials
-- Dimensions
-- Geographic information
-- Subjects and classification
-- Rights information
-- Links to the original source
+- Respects API rate limits (typically 1-5 requests/second)
+- Only downloads open-access/public domain materials
+- Includes proper attribution and source links
+- Logs all requests for transparency
+- Implements retry logic for failed requests
 
 ## Troubleshooting
 
-### API Rate Limits
+### Common Issues
+1. **API Key Issues** - Check configuration file format
+2. **Rate Limiting** - Adjust delay settings in scraper config
+3. **Network Timeouts** - Enable resume functionality
+4. **Storage Space** - Monitor disk usage, implement cleanup scripts
 
-If you encounter errors about rate limits:
-
-1. Decrease the `--max` parameter
-2. Add longer pauses between requests by editing the scraper
-3. Run the scrapers at different times
-
-### Connection Errors
-
-If you experience connection issues:
-
-1. Check your internet connection
-2. Verify that your API key is valid and entered correctly
-3. Some institutions may have scheduled maintenance - try again later
-
-### Image Download Failures
-
-If images fail to download:
-
-1. Check if the institution allows programmatic downloading
-2. Some high-resolution images may require special permissions
-3. Try running with just a few results to troubleshoot
-
-### Permission Denied Errors
-
-If you get "permission denied" when saving files:
-
-1. Ensure you have write permissions to the output directory
-2. Close any open files in the output directory
-3. Try a different output location
+### Log Files
+All operations are logged in `output/logs/` with timestamps and error details.
 
 ## Next Steps
 
-After collecting your cloud imagery dataset, you can proceed to:
+After collection completion:
+1. Review collection statistics in generated reports
+2. Proceed to [Step 2: Mixing the Archive]
+3. Begin manual curation and subjective selection process
 
-1. **Data Organization**: Cluster the images based on visual similarity
-2. **Data Curation**: Create meaningful sequences and typologies
-
-For more information, see the [Data Organization Guide]
-## Need Help?
-
-If you encounter issues not covered here: Contact the project maintainer directly
 
 Happy cloud hunting!
