@@ -1,3 +1,5 @@
+![Image](https://github.com/user-attachments/assets/e75bfb84-84e1-41da-a542-68039e41027b)  ![Image](https://github.com/user-attachments/assets/2dd36468-e5fa-4172-bd0a-4ac07ac19e24) 
+
 # Step 2: Mixing the Archive - From Automation to Subjectivity
 
 Once all images are automatically downloaded, they are placed into a **single shared folder**. At this point, **subjectivity** is deliberately introduced into the process. The intention is to extend beyond literal representations of clouds, incorporating interpretive criteria that might render an image "cloud-like"—not just literal clouds, but anything evoking cloudiness. A patch of foam, a sheep's wool, vapor, or even cotton balls.
@@ -22,9 +24,7 @@ This layer plays with adding the subjectivity to the narration and humanizes the
 ## Curation Process
 
 ### 1. Review Automated Collection
-Start by examining the images collected in Step 1:
-```bash
-```
+Start by examining the images collected in Step 1
 
 ### 2. Develop Subjective Criteria
 
