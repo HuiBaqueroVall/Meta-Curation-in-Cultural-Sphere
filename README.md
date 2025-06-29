@@ -1,4 +1,5 @@
 # Digital Archives as Aesthetic Machines
+![Image](https://github.com/user-attachments/assets/9350aec2-d8ac-4324-a46f-5985808f3327)
 # A Metacuration Methodology for Recovering Narrative from Digital Cultural Collections
 
 Digital archives increasingly organize visibility through metadata rather than cultural context, flattening meaning into searchable units. This open-source methodology bridges automation and human interpretation to recuperate narrative from systems that fragment meaning.
