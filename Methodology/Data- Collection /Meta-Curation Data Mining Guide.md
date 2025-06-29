@@ -1,4 +1,4 @@
-# Meta-Curation Data Mining Guide
+# Meta-Curation Data Collection Guide
 
 This guide explains how to use our collection of web scrapers to gather imagery and metadata (in this case cloud, but can be altered) from various digital archives and museum collections. Even if you've never used a command-line tool before, this step-by-step guide will help you get started.
 
