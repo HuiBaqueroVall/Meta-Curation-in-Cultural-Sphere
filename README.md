@@ -1,96 +1,67 @@
-# Meta-Curation-in-Cultural-Sphere README
+# Digital Archives as Aesthetic Machines
+# A Metacuration Methodology for Recovering Narrative from Digital Cultural Collections
 
-![Meta-Curation Atlas Banner](SAAM-1974.118.11_1.jpg)
+Digital archives increasingly organize visibility through metadata rather than cultural context, flattening meaning into searchable units. This open-source methodology bridges automation and human interpretation to recuperate narrative from systems that fragment meaning.
+A hybrid approach that combines algorithmic data collection with subjective curation, using visual clustering to reveal new taxonomies beyond textual metadata.
 
-> "To read the cloud today is to read both the image and its metadata, both icon and algorithm."
+# Quick Start
+# Clone the repository
+git clone https://github.com/yourusername/digital-archives-metacuration.git
+cd digital-archives-metacuration
 
-## About This Project
-
-The Meta-Curation Atlas is an image-based cartography that maps how the cloud motif transforms across digital archives—from theological mystery to scientific object to corporate metaphor. This project reclaims narrative agency in an age of algorithmic flattening, examining how meaning is constructed, filtered, and potentially recovered from database structures.
-
-The cloud serves as our object of study because it spans heaven and hard drive, appearing in religious paintings, scientific illustrations, user interfaces, and marketing campaigns for data infrastructure. Its meaning shifts between the divine, the natural, and the technical—making it the perfect symbol to trace through digital cultural repositories.
-
-## Methodology
-
-This project operates through three interconnected methodological stages:
-
-### 1. Data Mining (Automated Research)
-
-Automated collection of cloud imagery from institutional repositories using APIs and web scraping, gathering both images and metadata from sources like:
-
-- Rijksmuseum
-- Getty Museum
-- Harvard Art Museums
-- Metropolitan Museum of Art
-- Digital Public Library of America
-- [View the complete list of sources](methodology/data_mining.md)
-
-### 2. Data Organization (Visual Clustering)
-
-Moving beyond metadata limitations, this stage clusters images based on visual similarity—form, color, texture, and composition—creating a taxonomy through visual language rather than textual classification.
-
-### 3. Meta-Curation (Interpretive Framing)
-
-The final stage introduces subjective interpretation, encompassing anything that evokes "cloudness"—from literal clouds to foam, wool, or vapor—connecting machine logic with human imagination and creating meaningful sequences and typologies.
-
-## Conceptual Framework
-
-This project exists between database and narrative, resisting the flattening tendencies of digital archives. Drawing inspiration from Aby Warburg's _Mnemosyne Atlas_, it uses juxtaposition to generate meaning and invite associative thinking.
-
-As Wolfgang Ernst notes, digital archives don't "remember" in a human sense—they sort, tag, retrieve, and reassemble without reflection. This atlas attempts to reintroduce narrative depth to systems designed for logistical efficiency.
-
-The digital museum no longer tells a story; it filters, tags, and retrieves. The archive has been flattened into a digital grid of thumbnails, whose value doesn't lie anymore in their historical resonance, context and story. In this context, meta-curation becomes a critical practice that can recover meaning and build new connections.
-
-## Using This Repository
-
-This repository contains:
-
-1. **Methodology Tools**: Scripts and documentation for each stage of the process
-2. **Atlas Sequences**: Curated image sequences organized by thematic threads
-3. **Publication Materials**: Essays and visual materials exploring the project's conceptual framework
-4. **Sample Datasets**: Example data showing the methodology in practice
-
-## Getting Started
-
-See our [Getting Started Guide](docs/getting_started.md) for instructions on setting up the data mining tools and exploring the atlas.
-
-### Prerequisites
-- Python 3.8+
-- API keys for various collections
-- Basic familiarity with command line interfaces
-
-### Installation
-```bash
-# Clone this repository
-git clone https://github.com/yourusername/meta-curation-atlas.git
-cd meta-curation-atlas
-
-# Install requirements
+# Install dependencies
 pip install -r requirements.txt
-```
 
-## Documentation
+# Set up configuration
+cp config/api_keys.json.template config/api_keys.json
+# Add your API keys to config/api_keys.json
 
-The project is documented in several key files:
+# Run a collection
+python scripts/collect_images.py --keyword "cloud" --institutions met rijksmuseum --limit 50
 
-- [Data Mining Guide](methodology/data_mining.md) - How to collect imagery from digital archives
-- [Organization Guide](methodology/data_organization.md) - How to cluster images by visual similarity
-- [Meta-Curation Guide](methodology/meta_curation.md) - How to create meaningful sequences and typologies
-- [Theoretical Framework](docs/theory.md) - The conceptual foundations of the project
+# Generate visualization
+python scripts/pixplot_integration.py --images-dir data/automated
 
-## Contributing
+# Table of Contents
+Methodology : Complete theoretical framework and process documentation → Read Methodology
+Installation : Setup guides, dependencies, and configuration → Setup Guide 
+Usage : Step-by-step tutorials and examples → Usage Guide
+Data Sources : API integrations and institutional partnerships → Data Sources 
+Tools & Dependencies : Technical specifications and software requirements
 
-We welcome contributions from researchers, artists, curators, and developers. See our [Contributing Guidelines](CONTRIBUTING.md) for information on how to participate.
+# The Four-Phase Methodology
+1. Automated Data Collection
 
-## License
+API integration with major cultural institutions
+Keyword-based searches across multiple databases
+Metadata extraction and standardization
 
-This project is licensed under Creative Commons Attribution-NonCommercial 4.0 International License - see the [LICENSE](LICENSE) file for details.
+2. Subjective Archive Mixing
 
-## Acknowledgments
+Manual curation of "cloud-like" images beyond literal representation
+Introduction of interpretive criteria and intuitive selection
 
-This project draws theoretical inspiration from:
-- Roberto Simanowski's "Digital Art and Meaning"
-- Wolfgang Ernst's work on digital memory
-- Yuk Hui's "On the Existence of Digital Objects"
-- Aby Warburg's Mnemosyne Atlas
-- Hito Steyerl's "Is a Museum a Factory?"
+3.  Visual Clustering
+
+Machine learning analysis using PixPlot
+Spatial organization based on visual similarity
+Form, color, texture, and composition analysis
+
+4. Editorial Workflow
+
+Transformation of clusters into narrative sequences
+Layout planning and publication preparation
+Hybrid human-machine curatorial decision making
+
+# Featured Case Study: The Cloud Atlas 
+When we search for "cloud" across different institutional databases, we encounter not merely different collections but entirely different epistemological frameworks. This divergence is mediated through APIs (Application Programming Interfaces), which act as structured gateways to institutional data. APIs define what data is accessible, how it can be queried, and in what format it is returned. They are not neutral tools but reflect the priorities, taxonomies, and assumptions of the institutions that design them. For example, the Met's API returns images tagged with controlled vocabularies that emphasize art historical categories: "landscape," "religious imagery," "atmospheric effects." Getty Images prioritizes commercial utility:"weather," "technology," "business concepts." Scientific repositories foreground empirical classification: "cumulus," "stratocumulus," "meteorological phenomena." Each system's parameters encode specific ways of knowing, creating what could be termed "epistemic filters" that shape not just what we see but how we understand what we see.
+
+# Supported Institutions
+InstitutionAPI StatusPublic DomainRate LimitMetropolitan Museum✅ No key required✅ Yes80 req/minRijksmuseum🔑 API key required✅ Yes10,000/dayEuropeana🔑 API key required✅ Yes10,000/daySmithsonian🔑 API key required✅ Yes5,000/dayGetty🔑 API key required⚠️ Mixed licensing1,000/day
+
+# Technical Requirements
+
+Python 3.8+
+PixPlot for visual clustering
+Institutional API access (some require registration)
+Basic machine learning libraries (included in requirements.txt)
